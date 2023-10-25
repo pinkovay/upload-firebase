@@ -122,6 +122,24 @@ app.post('/upload', upload.single('file'), (req, res) => {
 });
 
 
+// ROTA DE LISTAGEM GERAL
+app.get('/listagemGeral', (req, res)=>{
+    const listRef = ref(storage);
+
+    listAll(listRef)
+    .then((list)=>{
+        console.log(list.items);
+        res.status(200).json({
+            "MSG":"LISTAGEM REALIZADA COM SUCESSO"
+        })
+    })
+    .catch((error)=>{
+        res.status(500).json({
+            "ERRO":error
+        })
+    })
+});
+
 app.listen(gateway = 3000, () => {
     console.log(`Rodando na porta localhost:${gateway}`)
 });
