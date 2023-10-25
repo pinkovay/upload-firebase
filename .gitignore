@@ -1,0 +1,7 @@
+
+
+# packages
+node_modules
+
+# json
+package-lock
