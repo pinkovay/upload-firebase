@@ -12,7 +12,7 @@ const {
     getDownloadURL,
     uploadBytes,
     listAll,
-    deletedObject
+    deleteObject
 } = require('firebase/storage');
 
 
@@ -93,7 +93,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
     // console.log(req.file);
 
 
-    // Definindo nome único para as imagens
+    // Definindo nome único para o arquivo
     const fileName = Date.now().toString() + '-' + req.file.originalname
 
 
@@ -128,7 +128,16 @@ app.get('/listagemGeral', (req, res)=>{
 
     listAll(listRef)
     .then((list)=>{
-        console.log(list.items);
+
+
+        // console.log(list.items);
+
+        list.items.forEach(
+            (imagem=>{
+                console.log(imagem.fullPath)
+            })
+        )
+
         res.status(200).json({
             "MSG":"LISTAGEM REALIZADA COM SUCESSO"
         })
@@ -139,6 +148,34 @@ app.get('/listagemGeral', (req, res)=>{
         })
     })
 });
+
+
+// ROTA DE EXCLUSÃO DE IMAGE
+app.delete("/excluirImagem/:fileName", (req, res)=>{
+
+    // RECEBE O NOME DO ARQ.
+    const {fileName} = req.params;
+
+
+    // CRIA A REF. DE ACESSO AO STORAGE DO FIREBASE
+    const deleteRef = ref(storage, fileName)
+
+    deleteObject(deleteRef)
+    .then(
+        ()=>{
+            console.log('IMAGEM EXCLUIDA COM SUCESSO')
+            res.status(200).json({'MSG':'DELETADA COM SUCESSO'})
+        }
+    )
+
+    .catch((error)=>{
+        res.status(500).json({
+            "ERRO":error
+        })
+    })
+
+
+})
 
 app.listen(gateway = 3000, () => {
     console.log(`Rodando na porta localhost:${gateway}`)
