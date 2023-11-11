@@ -28,14 +28,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 
+// REQUISITANDO E CONFIGURANDO O DOTENV PARA AS CHAVES DA API NÃO APARECEREM
+require("dotenv").config()
+
 /* DADOS DE CONEXÃO COM O FIREBASE*/
 const firebaseConfig = {
-    apiKey: "AIzaSyBNFsOx34whDOVG79Rj_84BgfJBrDTqSGQ",
+    apiKey: process.env.API_KEY,
     authDomain: "upload-nodejs-81b8a.firebaseapp.com",
-    projectId: "upload-nodejs-81b8a",
+    projectId: process.env.PROJECT_ID,
     storageBucket: "upload-nodejs-81b8a.appspot.com",
     messagingSenderId: "680308757143",
-    appId: "1:680308757143:web:b713976a1cee6544f30fd2",
+    appId: process.env.APP_ID,
     measurementId: "G-3V2G3Q4ZZB"
 };
 
@@ -43,10 +46,8 @@ const firebaseConfig = {
 // INICIALIZAR O FIREBASE;
 const firebaseApp = initializeApp(firebaseConfig);
 
-
 // CONECTANDO COM O STORAGE;
 const storage = getStorage(firebaseApp);
-
 
 // COMUNICAÇÃO DO MULTER;
 
@@ -60,7 +61,6 @@ const fileFilter = (req, file, cb) => {
         cb(null, false)
     }
 };
-
 
 // DEFINIÇÃO DE USO DO MULTER
 const upload = multer({
@@ -178,5 +178,5 @@ app.delete("/excluirImagem/:fileName", (req, res)=>{
 })
 
 app.listen(gateway = 3000, () => {
-    console.log(`Rodando na porta localhost:${gateway}`)
+    console.log(`Rodando na porta https://localhost:${gateway}`)
 });

@@ -1,7 +1,12 @@
-
-
 # packages
 node_modules
 
 # json
-package-lock
+package-lock.json
+
+# files
+firebase-config.js
+
+# env
+.env
+
